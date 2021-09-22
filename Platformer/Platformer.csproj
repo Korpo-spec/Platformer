@@ -5,4 +5,22 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="SFML.Net.x64" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="assets/*.txt" />
+    <EmbeddedResource Include="assets/*.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="assets/*.png" />
+    <EmbeddedResource Include="assets/*.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

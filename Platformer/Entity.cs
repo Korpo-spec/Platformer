@@ -20,11 +20,8 @@ namespace Platformer
             get => sprite.Position;
             set => sprite.Position = value;
         }
-        public readonly FloatRect Bounds
-        {
-            get;
-            set;
-        }
+        public readonly FloatRect Bounds;
+        
         public void Create(Scene scene)
         {
 

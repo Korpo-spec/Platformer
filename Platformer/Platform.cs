@@ -13,5 +13,8 @@ namespace Platformer
             sprite.Origin = new Vector2f(9,9);
             
         }
+        
+        public override bool Solid => true;
+        
     }
 }

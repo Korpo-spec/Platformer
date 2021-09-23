@@ -55,6 +55,27 @@ namespace Platformer
 
             }
         }
-
+        public bool TryMove(Entity entity, Vector2f movement)
+        {
+            entity.Position += movement;
+            bool collided = false;
+            for (int i = 0; i < entities.Count; i++) 
+            {
+                Entity other = entities[i];
+                if (!other.Solid) continue;
+                if (other == entity) continue;
+                
+                FloatRect boundsA = entity.Bounds;
+                FloatRect boundsB = other.Bounds;
+                if (Collision.RectangleRectangle(boundsA, boundsB, out Collision.Hit hit))
+                {
+                    entity.Position += hit.Normal * hit.Overlap;
+                    i = -1;
+                    collided = true;
+                }
+            }
+            return collided;
+        }
+        
     }
 }

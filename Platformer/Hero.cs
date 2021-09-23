@@ -7,6 +7,13 @@ namespace Platformer
 {
     public class Hero : Entity
     {
+        public const float WalkSpeed = 100f;
+        public const float JumpForce = 250f;
+        public const float GravityForce = 400f;
+        
+        private float verticalSpeed;
+        private bool isGrounded;
+        private bool isUpPressed;
         private bool faceRight = false;
         public Hero() : base("characters")
         {
@@ -18,14 +25,41 @@ namespace Platformer
         {
             if(Keyboard.IsKeyPressed(Keyboard.Key.Left))
             {
-                Position -= new Vector2f(100 * deltaTime, 0);
+                scene.TryMove(this, new Vector2f(-WalkSpeed * deltaTime, 0));
                 faceRight = false;
             }
             if(Keyboard.IsKeyPressed(Keyboard.Key.Right))
             {
-                Position -= new Vector2f(-100 * deltaTime, 0);
+                scene.TryMove(this, new Vector2f(WalkSpeed * deltaTime, 0));
                 faceRight =  true;
             }
+            if(Keyboard.IsKeyPressed(Keyboard.Key.Up))
+            {
+                if(isGrounded && !isUpPressed)
+                {
+                    verticalSpeed = -JumpForce;
+                    isUpPressed = true;
+                }
+                else
+                {
+                    isUpPressed = false;
+                }
+                
+                    
+            }
+            verticalSpeed += GravityForce * deltaTime;
+            if(verticalSpeed > 500f) verticalSpeed = 500;
+            
+            isGrounded = false;
+            Vector2f velocity = new Vector2f(0,verticalSpeed*deltaTime);
+            if(scene.TryMove(this,velocity))
+            {
+                if( verticalSpeed > 0f) isGrounded = true;
+                verticalSpeed = 0f;
+            }
+            
+            
+            
         }
 
         public override void Render(RenderTarget target)

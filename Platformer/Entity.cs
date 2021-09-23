@@ -21,6 +21,9 @@ namespace Platformer
             get => sprite.Position;
             set => sprite.Position = value;
         }
+
+        public virtual bool Solid => false;
+        
         public virtual FloatRect Bounds => sprite.GetGlobalBounds();
         
         public virtual void Create(Scene scene)

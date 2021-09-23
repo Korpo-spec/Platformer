@@ -51,7 +51,7 @@ namespace Platformer
             for (int i = entities.Count - 1; i >= 0; i--)
             {
                 Entity entity = entities[i];
-                entity.Render(window);
+                entity.Render(target);
 
             }
         }

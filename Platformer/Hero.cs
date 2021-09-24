@@ -7,6 +7,7 @@ namespace Platformer
 {
     public class Hero : Entity
     {
+        
         public const float WalkSpeed = 100f;
         public const float JumpForce = 250f;
         public const float GravityForce = 400f;
@@ -20,7 +21,19 @@ namespace Platformer
             sprite.TextureRect = new IntRect(0, 0, 24, 24);
             sprite.Origin = new Vector2f(12, 12);
         }
-
+        
+        public override FloatRect Bounds 
+        {
+            get 
+            {
+                var bounds = base.Bounds;
+                bounds.Left += 3;
+                bounds.Width -= 6;
+                bounds.Top += 3;
+                bounds.Height -= 3;
+                return bounds;
+            }
+        }
         public override void Update(Scene scene, float deltaTime)
         {
             if(Keyboard.IsKeyPressed(Keyboard.Key.Left))
@@ -54,8 +67,15 @@ namespace Platformer
             Vector2f velocity = new Vector2f(0,verticalSpeed*deltaTime);
             if(scene.TryMove(this,velocity))
             {
-                if( verticalSpeed > 0f) isGrounded = true;
-                verticalSpeed = 0f;
+                if( verticalSpeed > 0f)
+                {
+                    isGrounded = true;
+                    verticalSpeed = 0f;
+                }
+                else
+                {
+                    verticalSpeed = -0.5f * verticalSpeed;
+                }
             }
             
             

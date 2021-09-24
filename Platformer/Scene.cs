@@ -3,6 +3,8 @@ using SFML.Graphics;
 using System.Collections.Generic;
 using SFML.System;
 using SFML.Window;
+using System.IO;
+using System.Text;
 
 namespace Platformer
 {
@@ -10,6 +12,8 @@ namespace Platformer
     {
         private readonly Dictionary<string, Texture> textures;
         private readonly List<Entity> entities;
+        private string nextScene;
+        private string currentScene;
         public Scene() 
         {
             textures =  new Dictionary<string, Texture>();
@@ -33,6 +37,7 @@ namespace Platformer
         }
         public void UpdateAll(float deltaTime)
         {
+            HandleSceneChange();
             for (int i = entities.Count - 1; i >= 0; i--)
             {
                 Entity entity = entities[i];
@@ -75,6 +80,81 @@ namespace Platformer
                 }
             }
             return collided;
+        }
+
+        public void Reload()
+        {
+            nextScene = currentScene;
+        }
+
+        public void Load(string sceneName)
+        {
+            nextScene = sceneName;
+        }
+
+        private void HandleSceneChange()
+        {
+            if(nextScene == null) return;
+            entities.Clear();
+            
+
+            string file = $"assets/{nextScene}.txt";
+            Console.WriteLine($"Loading scene '{file}'");
+
+            foreach (var line in File.ReadLines(file, Encoding.UTF8))
+            {
+                string parsed = line.Trim();
+                int commentAt = parsed.IndexOf('#');
+                if (commentAt >= 0)
+                {
+                    parsed = parsed.Substring(0, commentAt);
+                    parsed = parsed.Trim();
+                }
+                if (parsed.Length == 0)
+                {
+                    continue;
+                }
+                string[] words = parsed.Split(" ");
+                Vector2f position = new Vector2f(int.Parse(words[1]), int.Parse(words[2]));
+
+                switch (words[0])
+                {
+                    case "w":
+                        Spawn(new Platform{Position = position});
+                        break;
+                    case "d":
+                        Spawn(new Door {
+                            Position = position,
+                            NextRoom = words[3]
+                            });
+                        break;
+                    case "k":
+                        Spawn(new Key {Position = position});
+                        break;
+                    case "h":
+                        Spawn(new Hero{ Position = position});
+                        break;
+                }
+            }
+
+            currentScene = nextScene;
+            nextScene = null;
+            Spawn(new Background());
+        }
+
+        public bool FindByType<T>(out T found) where T : Entity
+        {
+            foreach(Entity entity in entities)
+            {
+                if (entity is T typed)
+                {
+                    found = typed;
+                    return true;
+                }
+            }
+            
+            found = default(T);
+            return false;
         }
         
     }

@@ -3,6 +3,7 @@ using SFML.Window;
 using SFML.System;
 using SFML.Graphics;
 
+
 namespace Platformer
 {
     public class Hero : Entity
@@ -16,10 +17,15 @@ namespace Platformer
         private bool isGrounded;
         private bool isUpPressed;
         private bool faceRight = false;
+        private Text gui;
         public Hero() : base("characters")
         {
             sprite.TextureRect = new IntRect(0, 0, 24, 24);
             sprite.Origin = new Vector2f(12, 12);
+            gui = new Text();
+            gui.CharacterSize = 24;
+            gui.Font = new Font("assets/future.ttf");
+            gui.FillColor = Color.Black;
         }
         
         public override FloatRect Bounds 
@@ -111,8 +117,20 @@ namespace Platformer
         {
             sprite.Scale = new Vector2f(faceRight ? -1 : 1, 1);
             base.Render(target);
+            gui.DisplayedString = $"Coins: {Coins}";
+            gui.Position = new Vector2f(25,20);
+            target.Draw(gui);
+            
+            
         }
+        
 
-
+        private int Coins = 0;
+        
+        
+        public void AddCoin()
+        {
+            Coins++;
+        }
     }
 }

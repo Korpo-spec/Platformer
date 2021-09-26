@@ -22,6 +22,8 @@ namespace Platformer
             {
                 if (Collision.RectangleRectangle(Bounds, hero.Bounds, out _))
                 {
+                    
+                    hero.AddCoin();
                     Dead = true;
                 }
             }

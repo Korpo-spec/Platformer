@@ -134,6 +134,9 @@ namespace Platformer
                     case "h":
                         Spawn(new Hero{ Position = position});
                         break;
+                    case "c":
+                        Spawn(new Coin{ Position = position});
+                        break;
                 }
             }
 

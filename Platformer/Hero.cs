@@ -34,17 +34,42 @@ namespace Platformer
                 return bounds;
             }
         }
+        
+        private void UpdateAnimation(float deltaTime)
+        {
+            if (time > 1/10f)
+            {
+                firstFrame = !firstFrame;
+                time = 0;
+
+            }
+            if (firstFrame)
+            {
+                sprite.TextureRect = new IntRect(0,0,24,24);
+            }
+            else
+            {
+                sprite.TextureRect = new IntRect(24,0,24,24);
+            }
+            time += deltaTime;
+        }
+
+        private float time = 0;
+        private bool firstFrame;
+
         public override void Update(Scene scene, float deltaTime)
         {
             if(Keyboard.IsKeyPressed(Keyboard.Key.Left))
             {
                 scene.TryMove(this, new Vector2f(-WalkSpeed * deltaTime, 0));
                 faceRight = false;
+                UpdateAnimation(deltaTime);
             }
             if(Keyboard.IsKeyPressed(Keyboard.Key.Right))
             {
                 scene.TryMove(this, new Vector2f(WalkSpeed * deltaTime, 0));
                 faceRight =  true;
+                UpdateAnimation(deltaTime);
             }
             if(Keyboard.IsKeyPressed(Keyboard.Key.Up))
             {
@@ -78,7 +103,7 @@ namespace Platformer
                 }
             }
             
-            
+            if(Position.Y > Program.windowH) scene.Reload();
             
         }
 

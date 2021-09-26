@@ -15,15 +15,19 @@ namespace Platformer
             sprite.Origin = new Vector2f(9, 11);
         }
         public override void Update(Scene scene, float deltaTime)
-        {
-            if (scene.FindByType<Hero>(out Hero hero))
+        {   
+            if (Unlocked)
             {
-                if (Collision.RectangleRectangle(Bounds, hero.Bounds, out _))
+                if (scene.FindByType<Hero>(out Hero hero))
                 {
-                    scene.Load(NextRoom);
+                    if (Collision.RectangleRectangle(Bounds, hero.Bounds, out _))
+                    {
+                        scene.Load(NextRoom);
+                    }
+    
                 }
-   
             }
+            
             if (Unlocked) sprite.Color = Color.Black;
         }
     }

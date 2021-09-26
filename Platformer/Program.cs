@@ -8,9 +8,11 @@ namespace Platformer
 {
     class Program
     {
+        public const int windowH = 600;
+        public const int windowW = 800;
         static void Main(string[] args)
         {
-            using (var window = new RenderWindow(new VideoMode(800, 600), "Platformer")) 
+            using (var window = new RenderWindow(new VideoMode(windowW, windowH), "Platformer")) 
             {
                 window.Closed += (o, e) => window.Close();
 

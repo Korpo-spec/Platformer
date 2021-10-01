@@ -109,7 +109,10 @@ namespace Platformer
                 }
             }
             
-            if(Position.Y > Program.windowH) scene.Reload();
+            if(Position.Y > Program.windowH ||
+               Position.Y < 0 ||
+               Position.X > Program.windowW ||
+               Position.X < 0) scene.Reload();
             
         }
 

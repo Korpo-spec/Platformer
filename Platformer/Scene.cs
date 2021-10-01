@@ -53,7 +53,7 @@ namespace Platformer
         }
         public void RenderAll(RenderTarget target)
         {
-            for (int i = entities.Count - 1; i >= 0; i--)
+            for (int i = 0; i < entities.Count; i++)
             {
                 Entity entity = entities[i];
                 entity.Render(target);
@@ -100,9 +100,11 @@ namespace Platformer
 
             string file = $"assets/{nextScene}.txt";
             Console.WriteLine($"Loading scene '{file}'");
+            Spawn(new Background());
 
             foreach (var line in File.ReadLines(file, Encoding.UTF8))
             {
+                
                 string parsed = line.Trim();
                 int commentAt = parsed.IndexOf('#');
                 if (commentAt >= 0)
@@ -142,7 +144,7 @@ namespace Platformer
 
             currentScene = nextScene;
             nextScene = null;
-            Spawn(new Background());
+            
         }
 
         public bool FindByType<T>(out T found) where T : Entity
